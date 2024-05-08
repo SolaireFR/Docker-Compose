@@ -19,8 +19,8 @@ if [ $? -eq 0 ]; then
 
     # Ajout configuration timezone
     echo ""
-    echo "--- CONFIG TIMEZONE ---"
-    echo "Europe/Paris" > /etc/timezone 2>&1
+    echo "--- CONFIG TIMEZONE Europe/Paris ---"
+    DEBIAN_FRONTEND=noninteractive apt-get install --reinstall tzdata > /dev/null 2>&1 && ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
     if [ $? -eq 0 ]; then
         echo REUSSITE
     else
@@ -41,35 +41,23 @@ if [ $? -eq 0 ]; then
 
     # Installation Git et Maven
     echo ""
-    echo "--- INSTALLATION DE GIT ET MAVEN ---"
+    echo "--- INSTALLATION DE MAVEN ---"
     echo ' ' >> ~/.bashrc
-    echo 'echo git : $(git --version)' >> ~/.bashrc
     echo 'echo java : $(java --version)' >> ~/.bashrc
     echo 'echo mvn : $(mvn --version)' >> ~/.bashrc
-    apt-get install git maven -y > /dev/null 2>&1
+    apt-get install maven -y > /dev/null 2>&1
     if [ $? -eq 0 ]; then
         echo REUSSITE
     else
         echo ECHEC
     fi
 
-    # Génération clés SSH
+    # FIN
     echo ""
-    echo "--- GENERATION CLES SSH ---"
-    key_file=~/.ssh/id_key
-    if [ ! -f "$key_file" ]; then
-        ssh-keygen -f "$key_file" -P "" -t rsa > /dev/null
-        echo REUSSITE
-    else
-        echo LE FICHIER EXISTE DEJA
-    fi
-
-    # GIT GlobalSite
-    echo ""
-    echo "Copier la clé SSH suivante pour l'ajouter à Github/Gitlab :"
-    cat "$key_file.pub"
-    echo ""
-    echo "Puis faite : /setup-git.sh"
+    echo "Faite : "
+    echo "cd ~/Projects/"
+    echo "ACCEDER A VOTRE PROJET puis :"
+    echo "mvn spring-boot:run"
 else
     echo 'ECHEC (probleme de connection ?)'
     echo Arret des operations.
