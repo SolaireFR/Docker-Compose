@@ -3,6 +3,10 @@
 # mysql -u root -proot
 # mysql -u root -proot < /sql_files/.sql
 
+# Port already in use :
+# netstat -ano | findstr : port number
+# taskkill /PID typeyourPIDhere /F
+
 services:
   mysql:
     image: mysql:latest
